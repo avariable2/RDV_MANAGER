@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="rdv_list">
+        <item> oui </item>
+        <item> oui1 </item>
+        <item> oui2 </item>
+        <item> oui3 </item>
+        <item> oui4 </item>
+    </string-array>
+</resources>
