@@ -21,11 +21,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Database Information
     static final String DB_NAME = "RDV.DB";
     // database version
-    static final int DB_VERSION = 1;
+    static final int DB_VERSION = 2;
     // Creating table query
-    private static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + "(" + _ID
+    private static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " (" + _ID
             + " INTEGER PRIMARY KEY AUTOINCREMENT, " + TITLE + " TEXT NOT NULL, " + DATE +
-            " TEXT, " + TIME + " TEXT, " + CONTACT + " TEXT, " + STATE + "BOOLEAN);";
+            " TEXT, " + TIME + " TEXT, " + CONTACT + " TEXT, " + STATE + " INTEGER);";
 
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -51,8 +51,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Cursor getAllRDV(){
-        String[] projection = {_ID,TITLE,DATE,TIME,CONTACT,STATE};
-        Cursor cursor = database.query(TABLE_NAME,projection,null,null,null,null,null,null);
+        String[] projection = new String[]{_ID, TITLE, DATE, TIME, CONTACT, STATE};
+        // Il faut appeler cette methode d'apres la doc
+        // https://developer.android.com/training/data-storage/sqlite#ReadDbRow
+        database = this.getReadableDatabase();
+        // En gros, tu as la possibilité de mettre null dans columns(le 2eme param)
+        // qui equivalent a renvoyer toute les columns. Ensuite au 3 parametre qui
+        // correspond au Where dans ta req (Select * from RDV where une condition [la aucune]) tu avais ouublié null
+        Cursor cursor = database.query( TABLE_NAME, projection,null ,null,null,null,null,null);
         return cursor;
     }
 
