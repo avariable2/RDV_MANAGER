@@ -19,8 +19,8 @@ public class RDV implements Parcelable {
     public RDV(String title, String date, String time,
                   String contact, int state) {
         this.title = title;
-        this.time = time;
         this.date = date;
+        this.time = time;
         this.contact = contact;
         this.state = 0;
     }
@@ -28,8 +28,8 @@ public class RDV implements Parcelable {
                String contact, int state) {
         this.id = id;
         this.title = title;
-        this.time = time;
         this.date = date;
+        this.time = time;
         this.contact = contact;
         this.state = 0;
     }
@@ -39,12 +39,6 @@ public class RDV implements Parcelable {
     }
     public void setId(long id) {
         this.id = id;
-    }
-    public String getContact() {
-        return contact;
-    }
-    public void setContact(String contact) {
-        this.contact = contact;
     }
     public String getTitle() {
         return title;
@@ -64,6 +58,12 @@ public class RDV implements Parcelable {
     public void setTime(String time) {
         this.time = time;
     }
+    public String getContact() {
+        return contact;
+    }
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
     public int getState() {
         return state;
     }
@@ -80,9 +80,9 @@ public class RDV implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(id);
-        dest.writeString(time);
         dest.writeString(title);
         dest.writeString(date);
+        dest.writeString(time);
         dest.writeString(contact);
         dest.writeInt(state);
     }
@@ -101,10 +101,10 @@ public class RDV implements Parcelable {
     @RequiresApi(api = Build.VERSION_CODES.Q)
     public RDV(Parcel parcel){
         id=parcel.readLong();
-        contact=parcel.readString();
         title=parcel.readString();
         date=parcel.readString();
         time=parcel.readString();
+        contact=parcel.readString();
         state=parcel.readInt();
     }
 }

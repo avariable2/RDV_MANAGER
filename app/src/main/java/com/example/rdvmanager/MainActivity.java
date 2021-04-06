@@ -55,12 +55,11 @@ public class MainActivity extends AppCompatActivity {
         TypefaceProvider.registerDefaultIconSets();
         myHelper = new DatabaseHelper(this);
         myHelper.open();
-        String[] myStringArray = getResources().getStringArray(R.array.rdv_list);
+        /*String[] myStringArray = getResources().getStringArray(R.array.rdv_list);
         ArrayAdapter<String> adapter = new
-                ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, myStringArray);
+                ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, myStringArray);*/
         myListView = (ListView) findViewById(R.id.myListView);
-        myListView.setEmptyView(findViewById(R.id.tvEmpty));
-        myListView.setAdapter(adapter);
+        //myListView.setAdapter(adapter);
 
         chargeData();
         registerForContextMenu(myListView);
@@ -73,9 +72,9 @@ public class MainActivity extends AppCompatActivity {
                 String date = ((TextView) v.findViewById(R.id.etDate)).getText().toString();
                 String time = ((TextView) v.findViewById(R.id.etTime)).getText().toString();
                 String contact = ((TextView) v.findViewById(R.id.etContact)).getText().toString();
-                int state = Integer.parseInt(((TextView) v.findViewById(R.id.state)).getText().toString());
+                String state = ((TextView) v.findViewById(R.id.state)).getText().toString();
 
-                RDV rdv = new RDV(Long.parseLong(idItem),title,date,time,contact,state);
+                RDV rdv = new RDV(Long.parseLong(idItem),title,date,time,contact,Integer.parseInt(state));
 
                 Intent intent = new Intent(getApplicationContext(), Ajouter.class);
                 intent.putExtra("SelectedRDV",rdv);
@@ -90,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
     public void chargeData(){
         final String[] from = new String[]{DatabaseHelper._ID, DatabaseHelper.TITLE,
                 DatabaseHelper.DATE, DatabaseHelper.TIME, DatabaseHelper.CONTACT, String.valueOf(DatabaseHelper.STATE)};
-        final int[]to= new int[]{R.id.etTitle,R.id.etDate,R.id.etTime,R.id.etContact, R.id.state};
+        final int[]to= new int[]{R.id.idRDV,R.id.etTitle,R.id.etDate,R.id.etTime,R.id.etContact, R.id.state};
 
         Cursor c = myHelper.getAllRDV();
         SimpleCursorAdapter adapter= new SimpleCursorAdapter(this,R.layout.rdv_item_list,c,from,to,0);

@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -26,11 +27,12 @@ public class Ajouter extends AppCompatActivity {
     int hours, minutes;
     Button btnPickTime;
     EditText etTime;
-    TextView tvId;
     EditText etTitle;
     EditText etContact;
 
     CheckBox state;
+
+    Button save;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -63,12 +65,12 @@ public class Ajouter extends AppCompatActivity {
         myHelper = new DatabaseHelper(this);
         myHelper.open();
         Intent intent = getIntent();
-        fromAdd= intent.getBooleanExtra("fromAdd",false);
+        fromAdd= intent.getBooleanExtra("fromAdd",true);
         if(!fromAdd){
             Bundle b= intent.getExtras();
             RDV selectedRDV= b.getParcelable("SelectedRDV");
 
-            tvId.setText(String.valueOf(selectedRDV.getId()));
+            //tvId.setText(String.valueOf(selectedRDV.getId()));
             etTitle.setText(selectedRDV.getTitle());
             etDate.setText(selectedRDV.getDate());
             etTime.setText(selectedRDV.getTime());
@@ -80,6 +82,17 @@ public class Ajouter extends AppCompatActivity {
                 state.setChecked(true);
             }
         }
+
+        save=(Button) findViewById(R.id.save);
+        save.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                saveRDV(v);
+
+                Intent intent=new Intent(Ajouter.this,MainActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 
@@ -164,9 +177,14 @@ public class Ajouter extends AppCompatActivity {
             startActivity(main);
         }
         else {
-            Long id = Long.parseLong(tvId.getText().toString());
+            Intent intent = getIntent();
+            Bundle b= intent.getExtras();
+            RDV selectedRDV= b.getParcelable("SelectedRDV");
+            //etTitle.setText(selectedRDV.getTitle());
+            //long id = Long.parseLong(tvId.getText().toString());
+            long id = selectedRDV.getId();
 
-            RDV rdv = new RDV(id,title,date,time,contact,Integer.parseInt(state.toString()));
+            RDV rdv = new RDV(id,title,date,time,contact,etState);
             int n = myHelper.update(rdv);
 
             Intent main = new Intent(this,MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

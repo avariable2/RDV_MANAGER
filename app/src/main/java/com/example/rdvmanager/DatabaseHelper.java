@@ -76,7 +76,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public int update(RDV rdv) {
-        Long _id= rdv.getId();
+        long _id= rdv.getId();
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(TITLE, rdv.getTitle());
