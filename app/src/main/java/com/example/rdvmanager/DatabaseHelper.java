@@ -1,5 +1,6 @@
 package com.example.rdvmanager;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -62,4 +63,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+    public void add(RDV rdv){
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(TITLE, rdv.getTitle());
+        contentValues.put(DATE, rdv.getDate());
+        contentValues.put(TIME, rdv.getTime());
+        contentValues.put(CONTACT, rdv.getContact());
+        contentValues.put(STATE, rdv.getState());
+
+        database.insert(TABLE_NAME,null,contentValues);
+    }
+
+    public int update(RDV rdv) {
+        Long _id= rdv.getId();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(TITLE, rdv.getTitle());
+        contentValues.put(DATE, rdv.getDate());
+        contentValues.put(TIME,rdv.getTime());
+        contentValues.put(CONTACT, rdv.getContact());
+        contentValues.put(STATE, rdv.getState());
+
+        int count = database.update(TABLE_NAME, contentValues, this._ID + " = " + _id, null);
+        return count;
+    }
+
+    public void delete(long _id)
+    {
+        database.delete(TABLE_NAME, _ID + "=" + _id, null);
+    }
 }

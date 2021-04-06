@@ -12,26 +12,26 @@ public class RDV implements Parcelable {
     String date;
     String time;
     String contact;
-    boolean state;
+    int state;
 
     public RDV() {
     }
     public RDV(String title, String date, String time,
-                  String contact, boolean state) {
+                  String contact, int state) {
         this.title = title;
         this.time = time;
         this.date = date;
         this.contact = contact;
-        this.state = false;
+        this.state = 0;
     }
     public RDV(long id, String title, String date, String time,
-               String contact, boolean state) {
+               String contact, int state) {
         this.id = id;
         this.title = title;
         this.time = time;
         this.date = date;
         this.contact = contact;
-        this.state = false;
+        this.state = 0;
     }
 
     public long getId() {
@@ -64,10 +64,10 @@ public class RDV implements Parcelable {
     public void setTime(String time) {
         this.time = time;
     }
-    public boolean getState() {
+    public int getState() {
         return state;
     }
-    public void setState(boolean state) {
+    public void setState(int state) {
         this.state = state;
     }
 
@@ -84,7 +84,7 @@ public class RDV implements Parcelable {
         dest.writeString(title);
         dest.writeString(date);
         dest.writeString(contact);
-        dest.writeBoolean(state);
+        dest.writeInt(state);
     }
 
     public static final Parcelable.Creator<RDV> CREATOR = new Parcelable.Creator<RDV>(){
@@ -105,6 +105,6 @@ public class RDV implements Parcelable {
         title=parcel.readString();
         date=parcel.readString();
         time=parcel.readString();
-        state=parcel.readBoolean();
+        state=parcel.readInt();
     }
 }
