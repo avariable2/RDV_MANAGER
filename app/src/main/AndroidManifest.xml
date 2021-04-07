@@ -17,8 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Ajouter" />
-        <activity android:name=".Parametres"
-            android:theme="@style/Theme.RDVManager"/>
+        <activity android:name=".Parametres" />
     </application>
 
 </manifest>
