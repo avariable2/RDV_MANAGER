@@ -1,4 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">RDV Manager</string>
-    <string name="TvNoItems">Aucun élément</string>
+    <string name="title_activity_change_theme" />
+
+    //ajout page
+    <string name="titre">Title</string>
+    <string name="date">Date</string>
+    <string name="heure">Time</string>
+    <string name="contact">Contact</string>
+    <string name="btnHeure">Time</string>
+    <string name="btnDate">Date</string>
+    <string name="etat">State</string>
+    <string name="cbEtat">Done</string>
+    <string name="btnPartage">Share</string>
+    <string name="btnSave">Save</string>
+    <string name="btnFermer">Close</string>
+    <string name="btnMaps">Maps</string>
+    <string name="adresse">Address</string>
+
+    //Preferences Page
+    <string name="clair">Light</string>
+    <string name="sombre">Dark</string>
+    <string name="themes">Theme</string>
+    <string name="parametres">Parameters</string>
+    <string name="langue">Language</string>
+    <string name="anglais">English</string>
+    <string name="francais">French</string>
+    <string name="btnMain">Menu</string>
+
+    //menu
+    <string name="para">Parameters</string>
 </resources>

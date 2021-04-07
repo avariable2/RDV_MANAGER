@@ -2,7 +2,6 @@ package com.example.rdvmanager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.ClipData;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -12,12 +11,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.TypefaceProvider;
 
@@ -40,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
             case R.id.parametre: {
-                Toast.makeText(this, "Paramètres", Toast.LENGTH_LONG).show();
+                Intent intent=new Intent(this, Parametres.class);
+                startActivity(intent);
                 return true;
             }
             default:
@@ -55,11 +52,8 @@ public class MainActivity extends AppCompatActivity {
         TypefaceProvider.registerDefaultIconSets();
         myHelper = new DatabaseHelper(this);
         myHelper.open();
-        /*String[] myStringArray = getResources().getStringArray(R.array.rdv_list);
-        ArrayAdapter<String> adapter = new
-                ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, myStringArray);*/
+
         myListView = (ListView) findViewById(R.id.myListView);
-        //myListView.setAdapter(adapter);
 
         chargeData();
         registerForContextMenu(myListView);
@@ -73,8 +67,9 @@ public class MainActivity extends AppCompatActivity {
                 String time = ((TextView) v.findViewById(R.id.etTime)).getText().toString();
                 String contact = ((TextView) v.findViewById(R.id.etContact)).getText().toString();
                 String state = ((TextView) v.findViewById(R.id.state)).getText().toString();
+                String adresse = ((TextView) v.findViewById(R.id.etAdresse)).getText().toString();
 
-                RDV rdv = new RDV(Long.parseLong(idItem),title,date,time,contact,Integer.parseInt(state));
+                RDV rdv = new RDV(Long.parseLong(idItem),title,date,time,contact,Integer.parseInt(state),adresse);
 
                 Intent intent = new Intent(getApplicationContext(), Ajouter.class);
                 intent.putExtra("SelectedRDV",rdv);
@@ -88,18 +83,13 @@ public class MainActivity extends AppCompatActivity {
     }
     public void chargeData(){
         final String[] from = new String[]{DatabaseHelper._ID, DatabaseHelper.TITLE,
-                DatabaseHelper.DATE, DatabaseHelper.TIME, DatabaseHelper.CONTACT, String.valueOf(DatabaseHelper.STATE)};
-        final int[]to= new int[]{R.id.idRDV,R.id.etTitle,R.id.etDate,R.id.etTime,R.id.etContact, R.id.state};
+                DatabaseHelper.DATE, DatabaseHelper.TIME, DatabaseHelper.CONTACT, String.valueOf(DatabaseHelper.STATE),DatabaseHelper.ADRESSE};
+        final int[]to= new int[]{R.id.idRDV,R.id.etTitle,R.id.etDate,R.id.etTime,R.id.etContact, R.id.state,R.id.etAdresse};
 
         Cursor c = myHelper.getAllRDV();
         SimpleCursorAdapter adapter= new SimpleCursorAdapter(this,R.layout.rdv_item_list,c,from,to,0);
         adapter.notifyDataSetChanged();
         myListView.setAdapter(adapter);
-    }
-
-    public void changeView(View view){
-        Intent intent = new Intent(this, Ajouter.class);
-        startActivity(intent);
     }
 
     @Override

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <!-- White theme -->
+    <style name="LightTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    </style>
+
+    <!-- Black theme -->
+    <style name="DarkTheme" >
+        <item name="android:background">#000000</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+
+</resources>

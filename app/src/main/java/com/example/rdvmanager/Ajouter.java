@@ -3,15 +3,13 @@ package com.example.rdvmanager;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.TimePicker;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,19 +19,26 @@ import java.util.Calendar;
 public class Ajouter extends AppCompatActivity {
 
     DatabaseHelper myHelper;
+
     int year, month, day;
     Button btnPickDate;
     EditText etDate;
+
     boolean fromAdd;
+
     int hours, minutes;
     Button btnPickTime;
+
     EditText etTime;
     EditText etTitle;
     EditText etContact;
-
     CheckBox state;
 
+    EditText etAdresse;
+    Button btnMaps;
+
     Button save;
+    Button cancel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -63,6 +68,15 @@ public class Ajouter extends AppCompatActivity {
         etContact=(EditText) findViewById(R.id.etContact);
         this.state = (CheckBox) findViewById(R.id.state);
 
+        etAdresse = (EditText) findViewById(R.id.etAdresse);
+        //btnMaps=(Button) findViewById(R.id.btnMaps);
+        /*btnMaps.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                launchMaps(v);
+            }
+        });*/
+
         myHelper = new DatabaseHelper(this);
         myHelper.open();
         Intent intent = getIntent();
@@ -76,13 +90,13 @@ public class Ajouter extends AppCompatActivity {
             etDate.setText(selectedRDV.getDate());
             etTime.setText(selectedRDV.getTime());
             etContact.setText(selectedRDV.getContact());
-            int etState;
-            if (this.state.isChecked()){
-                etState = 1;
+            if (selectedRDV.getState()==1){
+                this.state.setChecked(true);
             }
             else {
-                etState = 0;
+                this.state.setChecked(false);;
             }
+            etAdresse.setText(selectedRDV.getAdresse());
         }
 
         save = (Button) findViewById(R.id.save);
@@ -92,6 +106,15 @@ public class Ajouter extends AppCompatActivity {
                 saveRDV(v);
 
                 Intent intent=new Intent(Ajouter.this,MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        cancel = (Button) findViewById(R.id.cancel);
+        cancel.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(Ajouter.this,MainActivity.class);
                 startActivity(intent);
             }
         });
@@ -157,6 +180,29 @@ public class Ajouter extends AppCompatActivity {
         time.show(getSupportFragmentManager(),"Time Picker");
     }
 
+    public void launchMaps(View view) {
+        String map = "http://maps.google.co.in/maps?q=" + etAdresse.getText().toString() ;
+        Uri gmmIntentUri = Uri.parse(map);
+
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        startActivity(mapIntent);
+        /*if (mapIntent.resolveActivity(getPackageManager()) != null) {
+            startActivity(mapIntent);
+        }*/
+    }
+
+    public void shareMethod(View v){
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        String msg = "Mon RDV est le suivant : " + etTitle.getText().toString() + " le " + etDate.getText().toString() + " à " + etTime.getText().toString() +
+                " avec " + etContact.getText().toString() + " à l'adresse : " + etAdresse.getText().toString();
+        sendIntent.putExtra(Intent.EXTRA_TEXT, msg);
+        sendIntent.setType("text/plain");
+        //startActivity(sendIntent);
+        startActivity(Intent.createChooser(sendIntent, "Share App"));
+    }
+
     public void saveRDV(View view) {
 
         String title = etTitle.getText().toString();
@@ -170,9 +216,10 @@ public class Ajouter extends AppCompatActivity {
         else{
             etState = 0;
         }
+        String adresse=etAdresse.getText().toString();
 
         if(fromAdd) {
-            RDV rdv = new RDV(title,date,time,contact,etState);
+            RDV rdv = new RDV(title,date,time,contact,etState,adresse);
             myHelper.add(rdv);
 
             Intent main = new Intent(Ajouter.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -186,7 +233,7 @@ public class Ajouter extends AppCompatActivity {
             //long id = Long.parseLong(tvId.getText().toString());
             long id = selectedRDV.getId();
 
-            RDV rdv = new RDV(id,title,date,time,contact,etState);
+            RDV rdv = new RDV(id,title,date,time,contact,etState,adresse);
             int n = myHelper.update(rdv);
 
             Intent main = new Intent(this,MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
