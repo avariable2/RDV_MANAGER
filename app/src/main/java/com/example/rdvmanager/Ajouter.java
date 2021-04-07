@@ -8,6 +8,7 @@ import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -60,7 +61,7 @@ public class Ajouter extends AppCompatActivity {
         });
 
         etContact=(EditText) findViewById(R.id.etContact);
-        state = (CheckBox) findViewById(R.id.state);
+        this.state = (CheckBox) findViewById(R.id.state);
 
         myHelper = new DatabaseHelper(this);
         myHelper.open();
@@ -75,15 +76,16 @@ public class Ajouter extends AppCompatActivity {
             etDate.setText(selectedRDV.getDate());
             etTime.setText(selectedRDV.getTime());
             etContact.setText(selectedRDV.getContact());
-            if (selectedRDV.getState() == 0){
-                state.setChecked(false);
+            int etState;
+            if (this.state.isChecked()){
+                etState = 1;
             }
             else {
-                state.setChecked(true);
+                etState = 0;
             }
         }
 
-        save=(Button) findViewById(R.id.save);
+        save = (Button) findViewById(R.id.save);
         save.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -162,18 +164,18 @@ public class Ajouter extends AppCompatActivity {
         String time= etTime.getText().toString();
         String contact = etContact.getText().toString();
         int etState;
-        if (state.getText().toString().equals(0)){
-            etState = 0;
+        if (state.isChecked()){
+            etState = 1;
         }
         else{
-            etState = 1;
+            etState = 0;
         }
 
         if(fromAdd) {
             RDV rdv = new RDV(title,date,time,contact,etState);
             myHelper.add(rdv);
 
-            Intent main = new Intent(this,MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            Intent main = new Intent(Ajouter.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(main);
         }
         else {

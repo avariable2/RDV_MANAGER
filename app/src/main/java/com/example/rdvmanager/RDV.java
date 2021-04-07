@@ -31,7 +31,7 @@ public class RDV implements Parcelable {
         this.date = date;
         this.time = time;
         this.contact = contact;
-        this.state = 0;
+        this.state = state;
     }
 
     public long getId() {
